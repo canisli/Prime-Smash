@@ -5,3 +5,12 @@ https://github.com/canisli/prime-smash/assets/73449574/b2062d25-cd29-4124-8597-c
 
 ## How to play
 Clone the repo and run `python3 game.py`. Requires `pygame==2.6.0`.
+
+
+## Roadmap
+- [x] Music
+- [x] Cursor trail
+- [x] Add bombs
+- [ ] Handle overlapping numbers
+- [ ] Pause button
+- [ ] Settings UI: Allow user to tweak difficulty, drag coefficient, gravity, Poisson frequency.
