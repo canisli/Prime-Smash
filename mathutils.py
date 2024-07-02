@@ -4,7 +4,7 @@ def sgn(x):
 def is_prime(n):
   """O(sqrt(n)) primality checker using the fact that all primes > 3 are in the form 6n±1
   https://stackoverflow.com/a/15285588/10637448"""
-
+  if n == 1: return False  
   if n == 2 or n == 3: return True
   if n < 2 or n%2 == 0: return False
   if n < 9: return True
