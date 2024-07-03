@@ -9,7 +9,7 @@ Clone the repo and run `python3 game.py`. Requires `pygame==2.6.0`.
 
 ## Roadmap
 - [x] Music
-- [x] Cursor trail
+- [x] Cursor trail when slicing
 - [x] Add bombs
 - [ ] Handle overlapping numbers
 - [ ] Pause button
