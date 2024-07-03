@@ -6,7 +6,8 @@ import asyncio
 from pygame import mixer
 
 sqrt = math.sqrt
-from mathutils import sgn, is_prime, factorize_composite
+from mathutils import sgn, is_prime, factorize_composite, distance
+
 
 def play_music():
     mixer.init()
@@ -25,7 +26,7 @@ async def main():
     clock = pygame.time.Clock()
     fps = 60
     dt = 1/fps
-    max_number = 10
+    max_number = 500
 
     fruit_colors = (pink:=(222, 66, 121), blue:=(0,0,255), maroon:=(128,0,0), green:=(103, 186, 84), orange:=(255, 126, 46))
     white = (255,255,255)
@@ -41,6 +42,9 @@ async def main():
     drag = 'quadratic'
     drag_coeff = 0.5
     pixels_per_meter = 100
+
+    def distance_to_fruit(cursor_position, fruit):
+        return distance((cursor_position[0]/pixels_per_meter, cursor_position[1]/pixels_per_meter), (fruit['x'], fruit['y']))
 
     fruits = {}
     counter = 0
@@ -107,6 +111,7 @@ async def main():
 
     fail_effect_time = 0.5
     last_fail_time = -1
+    slice_start_time = 0
     async def fail():
         nonlocal score, high_score, canvas_color, fail_counter, last_fail_time
         print(f'fail #{fail_counter}')
@@ -187,15 +192,16 @@ async def main():
         time += dt
         # print(clock)
         pygame.display.update()
-
+                
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_down = True
                 mouse_down_counter += 1
                 print('Mouse down')
                 current_position = pygame.mouse.get_pos()
+                slice_start_time = time
                 for count,fruit in fruits.items():
-                    if not fruit['hit'] and abs(current_position[0]/pixels_per_meter - fruit['x']) < radius  and abs(current_position[1]/pixels_per_meter - fruit['y']) < radius:
+                    if not fruit['hit'] and distance_to_fruit(current_position, fruit) < radius:
                         # fruit['v_x'] += random.randint(-5, 5)
                         # fruit['v_y'] += random.randint(-5, 5)
                         if fruit['is_prime']:
@@ -213,7 +219,7 @@ async def main():
                 mouse_trail.append(current_position)
 
                 for count, fruit in fruits.copy().items():
-                    if not fruit['hit'] and  (time - fruit['creation_time'])>0.5 and abs(current_position[0]/pixels_per_meter - fruit['x']) < radius  and abs(current_position[1]/pixels_per_meter - fruit['y']) < radius:
+                    if not fruit['hit'] and (time - fruit['creation_time'])>0.5 and distance_to_fruit(current_position, fruit) < radius:
                         fruit['hit'] = True
                         print('SLICE!!!')
                         if fruit['is_prime'] or fruit['number'] == 1:

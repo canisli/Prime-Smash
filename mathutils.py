@@ -1,3 +1,5 @@
+import math
+
 def sgn(x):
    return int(x>0)
 
@@ -28,3 +30,9 @@ def factorize_composite(n):
 
     return set(reduce(list.__add__, 
             ([i, n//i] for i in range(2, int(n**0.5) + 1) if n % i == 0)))
+
+def distance(a,b):
+    """Return Eucliean distance between two tuples"""
+    x1, y1 = a
+    x2, y2 = b
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
